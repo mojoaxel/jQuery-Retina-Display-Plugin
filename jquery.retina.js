@@ -7,7 +7,7 @@
 	Revision History:
 		1.0 (23/08/2010)	- Initial release.
 		1.1 (27/08/2010)	- Made plugin chainable
-		1.2 (10/11/2010)	- Fixed broken retina_part setting. Wrapped in self executing function (closure)
+		1.2 (10/11/2010)	- Fixed broken suffix setting. Wrapped in self executing function (closure)
 		1.3 (29/10/2011)	- Checked if source has already been updated (via mattbilson)
 */
 
@@ -15,7 +15,7 @@
 (function( $ ){
 	$.fn.retina = function(settings) {
 		settings = $.extend({
-			retina_part: "@2x",
+			suffix: "@2x",
 			save_size: true
 		}, (typeof settings === "undefined") ? {} : settings)
 
@@ -36,7 +36,7 @@
 
 				var new_image_src = $(element).attr('src');
 				var pos = new_image_src.lastIndexOf('.');
-				new_image_src = new_image_src.substring(0, pos) + settings['retina_part'] + new_image_src.substring(pos);
+				new_image_src = new_image_src.substring(0, pos) + settings['suffix'] + new_image_src.substring(pos);
 
 				$.ajax({
 					url: new_image_src,
