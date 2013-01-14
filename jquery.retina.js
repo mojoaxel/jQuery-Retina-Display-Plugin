@@ -11,32 +11,41 @@
 		1.3 (29/10/2011)	- Checked if source has already been updated (via mattbilson)
 */
 
+
 (function( $ ){
-	$.fn.retina = function(retina_part) {
-		// Set default retina file part to '-2x'
-		// Eg. some_image.jpg will become some_image-2x.jpg
-		var settings = {'retina_part': '-2x'};
-		if(retina_part) jQuery.extend(settings, { 'retina_part': retina_part });
+	$.fn.retina = function(settings) {
+		settings = $.extend({
+			retina_part: "@2x",
+			save_size: true
+		}, (typeof settings === "undefined") ? {} : settings)
 
 		if(window.devicePixelRatio >= 2) {
 			this.each(function(index, element) {
 				if(!$(element).attr('src')) return;
 
-				var width = $(element).width();
-				var height = $(element).height();
-				
-				var checkForRetina = new RegExp("(.+)("+settings['retina_part']+"\\.\\w{3,4})");
-				if(checkForRetina.test($(element).attr('src'))) return;
+				if(settings['save_size']) {
+					var width = $(element).width();
+					var height = $(element).height();
+				}
 
-				var new_image_src = $(element).attr('src').replace(/(.+)(\.\w{3,4})$/, "$1"+ settings['retina_part'] +"$2");
-				$.ajax({url: new_image_src, type: "HEAD", success: function() {
-					$(element).attr('src', new_image_src);
-					$(element).width(width);
-					$(element).height(height);
-				}});
+				var new_image_src = $(element).attr('src');
+				var pos = new_image_src.lastIndexOf('.');
+				new_image_src = new_image_src.substring(0, pos) + settings['retina_part'] + new_image_src.substring(pos);
+
+				$.ajax({
+					url: new_image_src,
+					type: "HEAD",
+					success: function() {
+						$(element).attr('src', new_image_src);
+
+						if(settings['save_size']) {
+							$(element).width(width);
+							$(element).height(height);
+						}
+					}
+				});
 			});
 		}
 		return this;
 	}
 })( jQuery );
-
