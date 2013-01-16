@@ -14,11 +14,13 @@ bower install --save jquery.retina
 ## Usage
 
 ```javascript
-$('img.retina').retina();
+$(window).load(function() {
+	$('img.retina').retina();
 
-$(element).retina({
-	save_size: false,
-	suffix: '-some-crazy-2x-suffix'
+	$(element).retina({
+		save_size: false,
+		suffix: '-some-crazy-2x-suffix'
+	});
 });
 ```
 
