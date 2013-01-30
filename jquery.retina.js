@@ -16,7 +16,8 @@
 	$.fn.retina = function(settings) {
 		settings = $.extend({
 			suffix: "@2x",
-			save_size: true
+			save_size: true,
+			strip_fingerprint: false
 		}, (typeof settings === "undefined") ? {} : settings)
 
 		// check if retina; method pulled from retinajs
@@ -35,6 +36,11 @@
 				}
 
 				var new_image_src = $(element).attr('src');
+
+				if(settings['strip_fingerprint']) {
+					new_image_src = new_image_src.replace(/-\b[0-9a-f]{5,40}\b\./g, '.')
+				}
+
 				var pos = new_image_src.lastIndexOf('.');
 				new_image_src = new_image_src.substring(0, pos) + settings['suffix'] + new_image_src.substring(pos);
 
