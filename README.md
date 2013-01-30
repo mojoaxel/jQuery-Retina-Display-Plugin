@@ -4,6 +4,7 @@ Retina images for your website. Main differences from [retinajs](http://retinajs
 * You can select which images you want to retinify
 * Optionally retain original image size
 * Configurable image suffix
+* Optionally strip asset fingerprint
 * jQuery dependency
 
 ## Installation
@@ -19,7 +20,8 @@ $(window).load(function() {
 
 	$(element).retina({
 		save_size: false,
-		suffix: '-some-crazy-2x-suffix'
+		suffix: '-some-crazy-2x-suffix',
+		strip_fingerprint: true
 	});
 });
 ```
