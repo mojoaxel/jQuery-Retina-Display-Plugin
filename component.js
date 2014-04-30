@@ -11,6 +11,6 @@
   "description": "Selectively replace non-retina images",
   "repository": {
     "type": "git",
-    "url": "git://github.com/iloveitaly/jQuery-Retina-Display-Plugin.git"
+    "url": "git://github.com/mojoaxel/jQuery-Retina-Display-Plugin.git"
   }
 }
