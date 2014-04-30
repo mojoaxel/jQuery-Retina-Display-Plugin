@@ -20,35 +20,35 @@
 			suffix: "@2x",
 			save_size: true,
 			strip_fingerprint: false
-		}, (typeof settings === "undefined") ? {} : settings)
+		}, (typeof settings === "undefined") ? {} : settings);
 
 		// check if retina; method pulled from retinajs
-		var retinaQuery = "(-webkit-min-device-pixel-ratio: 1.5),\
-						(min--moz-device-pixel-ratio: 1.5),\
-						(-o-min-device-pixel-ratio: 3/2),\
-						(min-resolution: 1.5dppx)";
+		var retinaQuery = "(-webkit-min-device-pixel-ratio: 1.5)," +
+						"(min--moz-device-pixel-ratio: 1.5)," +
+						"(-o-min-device-pixel-ratio: 3/2)," +
+						"(min-resolution: 1.5dppx)";
 
 		if(window.devicePixelRatio > 1 || (window.matchMedia && matchMedia(retinaQuery).matches)) {
 			this.each(function(index, element) {
 				var src = $(element).attr('src');
-				if(!src) return;
+				if(!src) { return; }
 
-				if(settings['save_size']) {
+				if(settings.save_size) {
 					var width = $(element).width();
 					var height = $(element).height();
 				}
-
+				
 				var new_image_src = src;
 
-				if(settings['strip_fingerprint']) {
-					new_image_src = new_image_src.replace(/-\b[0-9a-f]{5,40}\b\./g, '.')
+				if(settings.strip_fingerprint) {
+					new_image_src = new_image_src.replace(/-\b[0-9a-f]{5,40}\b\./g, '.');
 				}
 
-				var checkForRetina = new RegExp("(.+)("+settings['retina_part']+"\\.\\w{3,4})");
-				if(checkForRetina.test(src)) return;
+				var checkForRetina = new RegExp("(.+)("+settings.retina_part+"\\.\\w{3,4})");
+				if(checkForRetina.test(src)) { return; }
 				
 				var pos = new_image_src.lastIndexOf('.');
-				new_image_src = new_image_src.substring(0, pos) + settings['suffix'] + new_image_src.substring(pos);
+				new_image_src = new_image_src.substring(0, pos) + settings.suffix + new_image_src.substring(pos);
 
 				$.ajax({
 					url: new_image_src,
@@ -56,7 +56,7 @@
 					success: function() {
 						$(element).attr('src', new_image_src);
 
-						if(settings['save_size']) {
+						if(settings.save_size) {
 							$(element).width(width);
 							$(element).height(height);
 						}
@@ -65,5 +65,5 @@
 			});
 		}
 		return this;
-	}
+	};
 })( jQuery );
