@@ -44,6 +44,9 @@
 					new_image_src = new_image_src.replace(/-\b[0-9a-f]{5,40}\b\./g, '.')
 				}
 
+				var checkForRetina = new RegExp("(.+)("+settings['retina_part']+"\\.\\w{3,4})");
+				if(checkForRetina.test(src)) return;
+				
 				var pos = new_image_src.lastIndexOf('.');
 				new_image_src = new_image_src.substring(0, pos) + settings['suffix'] + new_image_src.substring(pos);
 
