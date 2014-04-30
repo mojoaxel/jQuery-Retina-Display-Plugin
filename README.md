@@ -28,6 +28,7 @@ $(window).load(function() {
 
 ## Authors
 
+* Alexander Wunschik http://wunschik.it, (@wunschik)
 * Michael Bianco (@iloveitaly)
 * Original author: Troy Mcilvena, http://www.troymcilvena.com, @mcilvena
  

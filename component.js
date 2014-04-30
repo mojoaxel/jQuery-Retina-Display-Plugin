@@ -1,7 +1,10 @@
 {
   "name": "jquery.retina",
-  "version": "1.3.1",
-  "main": "./jquery.loadmask.spin.js",
+  "version": "1.4",
+  "main": "./jquery.retina.js",
+  "ignore": [
+    "README.md"
+  ],
   "dependencies": {
     "jquery": "~1.8",
   },
