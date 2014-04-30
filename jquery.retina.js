@@ -21,18 +21,17 @@
 			save_size: true,
 			strip_fingerprint: false
 		}, (typeof settings === "undefined") ? {} : settings);
-		
+
 		// check if retina; method pulled from retinajs
 		var retinaQuery = "(-webkit-min-device-pixel-ratio: 1.5)," +
 						"(min--moz-device-pixel-ratio: 1.5)," +
 						"(-o-min-device-pixel-ratio: 3/2)," +
 						"(min-resolution: 1.5dppx)";
-		
+
 		if(window.devicePixelRatio > 1 || (window.matchMedia && matchMedia(retinaQuery).matches)) {
 			this.each(function(index, element) {
 				var src = $(element).attr('src');
 				var bgSrc = $(element).css('background-image').replace("url(", "").replace(")", "");
-				console.log("retina: ", new_image_bgSrc);
 				if(!src && !bgSrc) { return; }
 
 				if(settings.save_size) {
@@ -42,12 +41,12 @@
 				
 				var new_image_src = src;
 				var new_image_bgSrc = bgSrc;
-				
+
 				if(settings.strip_fingerprint) {
 					new_image_src = new_image_src.replace(/-\b[0-9a-f]{5,40}\b\./g, '.');
 					new_image_bgSrc = new_image_bgSrc.replace(/-\b[0-9a-f]{5,40}\b\./g, '.');
 				}
-				
+
 				var checkForRetina = new RegExp("(.+)("+settings.retina_part+"\\.\\w{3,4})");
 				if(!checkForRetina.test(src) && src) {
 					var pos = new_image_src.lastIndexOf('.');
@@ -57,7 +56,7 @@
 						type: "HEAD",
 						success: function() {
 							$(element).attr('src', new_image_src);
-							
+	
 							if(settings.save_size) {
 								if (width)  $(element).width(width);
 								if (height) $(element).height(height);
@@ -73,6 +72,7 @@
 						url: new_image_bgSrc,
 						type: "HEAD",
 						success: function() {
+							console.log(new_image_bgSrc);
 							$(element).css('background-image', "url(" + new_image_bgSrc + ")");
 							
 							if(settings.save_size) {
