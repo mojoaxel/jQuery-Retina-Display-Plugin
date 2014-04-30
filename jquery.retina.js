@@ -11,7 +11,7 @@
 		1.2   (10/11/2010)	- Fixed broken retina_part setting. Wrapped in self executing function (closure)
 		1.3   (29/10/2011)	- Checked if source has already been updated (via mattbilson)
 		1.3.1 (30/01/2013)	- via iloveitaly
-		1.4   (30/04/2014)	- via mojoaxel
+		1.4   (30/04/2014)	- added support for "background-image" (via mojoaxel)
 */
 
 (function( $ ){
@@ -21,17 +21,19 @@
 			save_size: true,
 			strip_fingerprint: false
 		}, (typeof settings === "undefined") ? {} : settings);
-
+		
 		// check if retina; method pulled from retinajs
 		var retinaQuery = "(-webkit-min-device-pixel-ratio: 1.5)," +
 						"(min--moz-device-pixel-ratio: 1.5)," +
 						"(-o-min-device-pixel-ratio: 3/2)," +
 						"(min-resolution: 1.5dppx)";
-
+		
 		if(window.devicePixelRatio > 1 || (window.matchMedia && matchMedia(retinaQuery).matches)) {
 			this.each(function(index, element) {
 				var src = $(element).attr('src');
-				if(!src) { return; }
+				var bgSrc = $(element).css('background-image').replace("url(", "").replace(")", "");
+				console.log("retina: ", new_image_bgSrc);
+				if(!src && !bgSrc) { return; }
 
 				if(settings.save_size) {
 					var width = $(element).width();
@@ -39,29 +41,47 @@
 				}
 				
 				var new_image_src = src;
-
+				var new_image_bgSrc = bgSrc;
+				
 				if(settings.strip_fingerprint) {
 					new_image_src = new_image_src.replace(/-\b[0-9a-f]{5,40}\b\./g, '.');
+					new_image_bgSrc = new_image_bgSrc.replace(/-\b[0-9a-f]{5,40}\b\./g, '.');
 				}
-
-				var checkForRetina = new RegExp("(.+)("+settings.retina_part+"\\.\\w{3,4})");
-				if(checkForRetina.test(src)) { return; }
 				
-				var pos = new_image_src.lastIndexOf('.');
-				new_image_src = new_image_src.substring(0, pos) + settings.suffix + new_image_src.substring(pos);
-
-				$.ajax({
-					url: new_image_src,
-					type: "HEAD",
-					success: function() {
-						$(element).attr('src', new_image_src);
-
-						if(settings.save_size) {
-							if (width)  $(element).width(width);
-							if (height) $(element).height(height);
+				var checkForRetina = new RegExp("(.+)("+settings.retina_part+"\\.\\w{3,4})");
+				if(!checkForRetina.test(src) && src) {
+					var pos = new_image_src.lastIndexOf('.');
+					new_image_src = new_image_src.substring(0, pos) + settings.suffix + new_image_src.substring(pos);
+					$.ajax({
+						url: new_image_src,
+						type: "HEAD",
+						success: function() {
+							$(element).attr('src', new_image_src);
+							
+							if(settings.save_size) {
+								if (width)  $(element).width(width);
+								if (height) $(element).height(height);
+							}
 						}
-					}
-				});
+					});
+				}
+				
+				if(!checkForRetina.test(bgSrc) && bgSrc) {
+					var pos = new_image_bgSrc.lastIndexOf('.');
+					new_image_bgSrc = new_image_bgSrc.substring(0, pos) + settings.suffix + new_image_bgSrc.substring(pos);
+					$.ajax({
+						url: new_image_bgSrc,
+						type: "HEAD",
+						success: function() {
+							$(element).css('background-image', "url(" + new_image_bgSrc + ")");
+							
+							if(settings.save_size) {
+								if (width)  $(element).width(width);
+								if (height) $(element).height(height);
+							}
+						}
+					});
+				}
 			});
 		}
 		return this;
