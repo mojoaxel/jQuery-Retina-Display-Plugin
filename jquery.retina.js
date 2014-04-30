@@ -57,8 +57,8 @@
 						$(element).attr('src', new_image_src);
 
 						if(settings.save_size) {
-							$(element).width(width);
-							$(element).height(height);
+							if (width)  $(element).width(width);
+							if (height) $(element).height(height);
 						}
 					}
 				});
