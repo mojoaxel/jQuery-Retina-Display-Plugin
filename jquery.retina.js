@@ -2,16 +2,17 @@
 	Authors: Troy Mcilvena (http://troymcilvena.com), @mcilvena
 	Authors: Michael Bianco (http://mabblog.com/), @iloveitaly
 	Authors: Alexander Wunschik (http://wunschik.it), @wunschik
-	Date: 30 April 2014
-	Version: 1.4
+	Date: 11 Mai 2014
+	Version: 1.4.1
 	
 	Revision History:
 		1.0   (23/08/2010)	- Initial release.
 		1.1   (27/08/2010)	- Made plugin chainable
 		1.2   (10/11/2010)	- Fixed broken retina_part setting. Wrapped in self executing function (closure)
 		1.3   (29/10/2011)	- Checked if source has already been updated (via mattbilson)
-		1.3.1 (30/01/2013)	- via iloveitaly
-		1.4   (30/04/2014)	- added support for "background-image" (via mojoaxel)
+		1.3.1 (30/01/2013)	- (iloveitaly)
+		1.4   (30/04/2014)	- added support for "background-image" (mojoaxel)
+		1.4.1 (11/05/2014)	- added option to force high resolution images (mojoaxel)
 */
 
 (function( $ ){
@@ -19,7 +20,8 @@
 		settings = $.extend({
 			suffix: "@2x",
 			save_size: true,
-			strip_fingerprint: false
+			strip_fingerprint: false,
+			force: false
 		}, (typeof settings === "undefined") ? {} : settings);
 
 		// check if retina; method pulled from retinajs
@@ -28,7 +30,7 @@
 						"(-o-min-device-pixel-ratio: 3/2)," +
 						"(min-resolution: 1.5dppx)";
 
-		if(window.devicePixelRatio > 1 || (window.matchMedia && matchMedia(retinaQuery).matches)) {
+		if (window.devicePixelRatio > 1 || (window.matchMedia && matchMedia(retinaQuery).matches) || settings.force) {
 			this.each(function(index, element) {
 				var src = $(element).attr('src');
 				var bgSrc = $(element).css('background-image').replace("url(", "").replace(")", "");

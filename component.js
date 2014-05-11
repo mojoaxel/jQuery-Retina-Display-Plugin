@@ -1,6 +1,6 @@
 {
   "name": "jquery.retina",
-  "version": "1.4",
+  "version": "1.4.1",
   "main": "./jquery.retina.js",
   "ignore": [
     "README.md"
