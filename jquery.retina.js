@@ -34,6 +34,9 @@
 			this.each(function(index, element) {
 				var src = $(element).attr('src');
 				var bgSrc = $(element).css('background-image').replace("url(", "").replace(")", "");
+				if(bgSrc == 'none') {
+					bgSrc = undefined;
+				}
 				if(!src && !bgSrc) { return; }
 
 				if(settings.save_size) {
